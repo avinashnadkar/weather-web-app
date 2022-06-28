@@ -1,0 +1,7 @@
+.mobileLayout{
+    border: 5px solid rgb(226, 226, 226);
+    height: 700px;
+    width: 400px;
+    border-radius: 30px;
+    background-color: white;
+}
