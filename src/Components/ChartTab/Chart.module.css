@@ -1,0 +1,56 @@
+.chartContainer{
+    height: 480px;
+    margin-top: 20px;
+    -webkit-box-shadow: 0px 2px 8px 0px rgba(179,179,179,1);
+    -moz-box-shadow: 0px 2px 8px 0px rgba(179,179,179,1);
+    box-shadow: 0px 2px 8px 0px rgba(179,179,179,1);
+    border-radius: 20px;
+}
+
+.temperature{
+   display: flex;
+   align-items: center;
+}
+
+.temperature h2{
+    font-size: 46px;
+    font-family: sans-serif;
+    margin: 20px 30px;
+}
+
+.temperature img{
+    height: 46px;
+    margin: 20px 15px;
+}
+
+.row{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.pressureTab, .humidityTab{
+    /* height: 70px;
+    width: 50px; */
+    padding: 10px;
+    font-family: sans-serif;
+    background-color: aliceblue;
+    width: 37%;
+}
+
+.pressureTab p{
+    padding: 0px 3px;
+    margin: 0;
+}
+
+.pressureTab p:nth-child(2){
+    font-weight: lighter;
+}
+
+.humidityTab p{
+    padding: 0px 3px;
+    margin: 0;
+}
+
+.humidityTab p:nth-child(2){
+    font-weight: lighter;
+}
