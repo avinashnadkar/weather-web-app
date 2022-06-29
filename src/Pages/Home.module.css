@@ -4,4 +4,11 @@
     width: 400px;
     border-radius: 30px;
     background-color: white;
+    padding: 15px;
+}
+
+.weekDays{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
 }
