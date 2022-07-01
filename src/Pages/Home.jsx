@@ -12,7 +12,13 @@ const Home = () => {
 
     //state for search baar
     const [searchFeild, setSearchField] = useState("Mumbai, Maharashtra")
-    const [location, setLocation] = useState({lat : "", lon : ""})
+    const [location, setLocation] = useState({lat : "0", lon : "0"})
+    const [weatherDetails, setWeatherDetails] = useState({main:{feels_like: ""
+        ,humidity: ""
+        ,pressure: ""
+        ,temp: ""
+        ,temp_max: ""
+        ,temp_min: ""}})
 
     //get geolocation
     useEffect(()=>{
@@ -25,6 +31,17 @@ const Home = () => {
         })
     },[])
 
+    //fetch weather details
+    useEffect(()=>{
+        axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&appid=${process.env.REACT_APP_API_KEY}&units=metric`)
+        .then((res)=>{
+            setWeatherDetails({...res.data})
+            console.log(res.data)
+        }).catch((err)=>{
+            console.log(err)
+        })
+    },[location])
+
     return(
         <div className={styles.mobileLayout}>
            <SearchBar searchField={searchFeild} onChange={e => setSearchField(e.target.value)} />
@@ -36,8 +53,8 @@ const Home = () => {
               <DayTab day="Mon" temperature="21 30" img={cloudy} weather="cloudy"/>
            </div>
 
-           <DayChart temp={"26 C"} img={sunny}/>
-           <p>{location.lat}, {location.lon}</p>
+           <DayChart temp={weatherDetails.main.feels_like + " C"} img={sunny} pressure={weatherDetails.main.pressure} humidity={weatherDetails.main.humidity}/>
+           
         </div>
     )
 }
