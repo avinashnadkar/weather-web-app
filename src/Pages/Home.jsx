@@ -4,8 +4,10 @@ import SearchBar from "../Components/Search/SearchBar";
 import styles from "./Home.module.css";
 import cloudy from "../Assets/Icons/cloudy.png"
 import sunny from "../Assets/Icons/sun.png"
+import rainy from "../Assets/Icons/rain.png"
 import DayChart from "../Components/ChartTab/DayChart";
 import axios from "axios";
+import {v4 as uuid} from 'uuid';
 
 
 const Home = () => {
@@ -18,7 +20,9 @@ const Home = () => {
         ,pressure: ""
         ,temp: ""
         ,temp_max: ""
-        ,temp_min: ""}})
+        ,temp_min: ""}
+    })
+    const [dailyForcast, setDailyForcast] = useState([])
 
     //get geolocation
     useEffect(()=>{
@@ -31,6 +35,29 @@ const Home = () => {
         })
     },[])
 
+    //convert to date
+    const convertDate = (num,output) => {
+        let newDate = new Date(num * 1000);
+        let day = newDate.getDay()
+        let date = newDate.getDate();
+        if(output == 'day'){
+            return day
+        }else if(output == 'date'){
+            return date
+        }
+    }
+
+    //wether img 
+    const weatherImg = (w) => {
+          if(w == 'Rain'){
+            return rainy
+          }else if(w == 'Sun'){
+            return sunny
+          }else{
+            return cloudy
+          }
+    }
+
     //fetch weather details
     useEffect(()=>{
         axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&appid=${process.env.REACT_APP_API_KEY}&units=metric`)
@@ -40,6 +67,23 @@ const Home = () => {
         }).catch((err)=>{
             console.log(err)
         })
+
+        axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${location.lat}&lon=${location.lon}&exclude=current,minutelyalerts&units=metric&appid=${process.env.REACT_APP_API_KEY}`)
+        .then((res)=>{
+            // setWeatherDetails({...weatherDetails,daily:[...res.data.daily]})
+            let newArr = res.data.daily
+            let weekDays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+            for(let i=0;i<newArr.length;i++){
+                let day = convertDate(newArr[i].dt,'day')
+                let date = convertDate(newArr[i].dt,'date')
+                newArr[i].dt = [weekDays[day],date]
+            }
+            setDailyForcast([...newArr])
+            console.log(newArr)
+        }).catch((err)=>{
+            console.log(err)
+        })
+        
     },[location])
 
     return(
@@ -47,13 +91,20 @@ const Home = () => {
            <SearchBar searchField={searchFeild} onChange={e => setSearchField(e.target.value)} />
 
            <div className={styles.weekDays}>
-              <DayTab day="Fri" temperature="21 18" img={sunny} weather="sunny"/>
-              <DayTab day="Sat" temperature="21 29" img={sunny} weather="sunny"/>
-              <DayTab day="Sun" temperature="21 23" img={cloudy} weather="cloudy"/>
-              <DayTab day="Mon" temperature="21 30" img={cloudy} weather="cloudy"/>
+            {
+                dailyForcast.map((el)=>{
+                    let today = new Date();
+                    if(today.getDate() == el.dt[1]){
+                        return <DayTab active={true} day={el.dt[0]} temperature={Math.ceil(el.temp.max) + '°' +Math.ceil(el.temp.min) + '°'} img={weatherImg(el.weather[0].main)} weather={el.weather[0].main} key={uuid()}/>
+                    }else{
+                        return <DayTab active={false} day={el.dt[0]} temperature={Math.ceil(el.temp.max) + '°' +Math.ceil(el.temp.min) + '°'} img={weatherImg(el.weather[0].main)} weather={el.weather[0].main} key={uuid()}/>
+                    }
+
+                })
+            }
            </div>
 
-           <DayChart temp={weatherDetails.main.feels_like + " C"} img={sunny} pressure={weatherDetails.main.pressure} humidity={weatherDetails.main.humidity}/>
+           <DayChart temp={Math.ceil(weatherDetails.main.temp) + "° C"} img={sunny} pressure={weatherDetails.main.pressure} humidity={weatherDetails.main.humidity}/>
            
         </div>
     )
