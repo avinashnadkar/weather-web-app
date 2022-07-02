@@ -1,19 +1,39 @@
 import styles from "./Chart.module.css";
-import { Line } from 'react-chartjs-2';
-import Chart from 'chart.js/auto';
+import  Chart  from "react-apexcharts";
 
 const DayChart = (props) => {
 
     const data = {
-        label: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-        datasets: [
-            {
-              id: 1,
-              label: '',
-              data: [5, 6, 7, 10, 3],
+        options: {
+          chart: {
+            id: "basic-bar",
+            toolbar: {
+                show: false
+            },
+            stroke: {
+                curve: 'smooth',
             }
-          ],
-    }
+          },
+          xaxis: {
+            min: 0,
+            max: 24,
+            tickAmount: 4
+          },
+          yaxis: {
+            show: true,
+            min: 10,
+            max: 40,
+            tickAmount: 2
+          }
+        },
+        
+        series: [
+          {
+            name: "Temp throught the day",
+            data: props.hourly
+          }
+        ]
+      }
 
     return(
         <div className={styles.chartContainer}>
@@ -22,7 +42,13 @@ const DayChart = (props) => {
                <img src={props.img} alt="weather icon"/>
            </div>
           
-          <Line data={data} />
+           <Chart
+                options={data.options}
+                series={data.series}
+                type="area"
+                width="400"
+                height="180"
+            />
 
            <div className={styles.row}>
                <div className={styles.pressureTab}>
