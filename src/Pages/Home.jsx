@@ -20,9 +20,13 @@ const Home = () => {
         ,pressure: ""
         ,temp: ""
         ,temp_max: ""
-        ,temp_min: ""}
+        ,temp_min: ""},
+        weather : [
+           { main : ''}
+        ]
     })
     const [dailyForcast, setDailyForcast] = useState([])
+    const [hourlyForcast, setHourlyForcast] = useState([])
 
     //get geolocation
     useEffect(()=>{
@@ -72,18 +76,26 @@ const Home = () => {
         .then((res)=>{
             // setWeatherDetails({...weatherDetails,daily:[...res.data.daily]})
             let newArr = res.data.daily
+            console.log(res.data, '-----')
             let weekDays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
-            for(let i=0;i<newArr.length;i++){
+            for(let i=0;i<newArr.length;i+=2){
                 let day = convertDate(newArr[i].dt,'day')
                 let date = convertDate(newArr[i].dt,'date')
                 newArr[i].dt = [weekDays[day],date]
             }
+
+            //set hourly forcast
+            let hourly = []
+            for(let j=0;j<res.data.hourly.length;j++){
+                hourly[j] = Math.ceil(res.data.hourly[j].temp)
+            }
+
             setDailyForcast([...newArr])
-            console.log(newArr)
+            setHourlyForcast([...hourly])
         }).catch((err)=>{
             console.log(err)
         })
-        
+
     },[location])
 
     return(
@@ -104,7 +116,7 @@ const Home = () => {
             }
            </div>
 
-           <DayChart temp={Math.ceil(weatherDetails.main.temp) + "° C"} img={sunny} pressure={weatherDetails.main.pressure} humidity={weatherDetails.main.humidity}/>
+           <DayChart temp={Math.ceil(weatherDetails.main.temp) + "° C"} img={weatherImg(weatherDetails.weather[0].main)} pressure={weatherDetails.main.pressure} humidity={weatherDetails.main.humidity} hourly={hourlyForcast}/>
            
         </div>
     )
