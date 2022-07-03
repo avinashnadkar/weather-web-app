@@ -48,3 +48,18 @@ input{
 .locationBtn img{
     height: 20px;
 } 
+
+.suggestionDropdown{
+    width: 400px;
+    border: none;
+    outline: none;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-bottom: 1px solid rgb(201, 201, 201);
+}
+
+.suggestionDropdown p {
+    margin-left: 5px;
+    font-family: sans-serif;
+}
