@@ -1,5 +1,6 @@
 import styles from "./Chart.module.css";
 import  Chart  from "react-apexcharts";
+import SunRiseAndSetChart from "../SunriseAndSunsetCart/SunRiseAndSetChart";
 
 const DayChart = (props) => {
 
@@ -61,6 +62,8 @@ const DayChart = (props) => {
                </div>
            </div>
 
+           <SunRiseAndSetChart sunriseTime={props.sunriseTime} sunsetTime={props.sunsetTime}/>
+           
         </div>
     )
 }

@@ -1,6 +1,6 @@
 .mobileLayout{
     border: 5px solid rgb(226, 226, 226);
-    height: 700px;
+    height: 730px;
     width: 400px;
     border-radius: 30px;
     background-color: white;
@@ -11,4 +11,17 @@
     display: flex;
     width: 400px;
     overflow: scroll;
+}
+
+.searchResult{
+    max-height: 640px;
+    overflow-y: scroll;
+    position: absolute;
+    -webkit-box-shadow: 0px 2px 8px 0px rgba(179,179,179,1);
+    -moz-box-shadow: 0px 2px 8px 0px rgba(179,179,179,1);
+    box-shadow: 0px 2px 8px 0px rgba(179,179,179,1);
+    width: 400px;
+    z-index: 2;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }

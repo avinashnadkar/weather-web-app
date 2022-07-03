@@ -1,0 +1,18 @@
+.sunriseAndSunsetTab{
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    padding-bottom: 0;
+    margin-top: 5px;
+}
+
+.sunriseAndSunsetTab p{
+    font-family: sans-serif;
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+}
+
+.sunriseAndSunsetTab p:nth-child(2){
+    font-weight: lighter;
+}
